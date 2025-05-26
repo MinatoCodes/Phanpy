@@ -1,19 +1,19 @@
 /*
-		* highlight-within-textarea
-		*
-		* @author  Will Boyd
-		* @github  https://github.com/lonekorean/highlight-within-textarea
-		*/
+ * highlight-within-textarea
+ *
+ * @author  Will Boyd
+ * @github  https://github.com/lonekorean/highlight-within-textarea
+ */
 
-(function ($) {
+(function($) {
 	let ID = 'hwt';
 
-	let HighlightWithinTextarea = function ($el, config) {
+	let HighlightWithinTextarea = function($el, config) {
 		this.init($el, config);
 	};
 
 	HighlightWithinTextarea.prototype = {
-		init: function ($el, config) {
+		init: function($el, config) {
 			this.$el = $el;
 
 			// backwards compatibility with v1 (deprecated)
@@ -30,7 +30,7 @@
 		},
 
 		// returns identifier strings that aren't necessarily "real" JavaScript types
-		getType: function (instance) {
+		getType: function(instance) {
 			let type = typeof instance;
 			if (!instance) {
 				return 'falsey';
@@ -53,7 +53,7 @@
 			return 'other';
 		},
 
-		generate: function () {
+		generate: function() {
 			this.$el
 				.addClass(ID + '-input ' + ID + '-content')
 				.on('input.' + ID, this.handleInput.bind(this))
@@ -88,26 +88,23 @@
 
 		// browser sniffing sucks, but there are browser-specific quirks to handle
 		// that are not a matter of feature detection
-		detectBrowser: function () {
+		detectBrowser: function() {
 			let ua = window.navigator.userAgent.toLowerCase();
 			if (ua.indexOf('firefox') !== -1) {
 				return 'firefox';
-			}
-			else if (!!ua.match(/msie|trident\/7|edge/)) {
+			} else if (!!ua.match(/msie|trident\/7|edge/)) {
 				return 'ie';
-			}
-			else if (!!ua.match(/ipad|iphone|ipod/) && ua.indexOf('windows phone') === -1) {
+			} else if (!!ua.match(/ipad|iphone|ipod/) && ua.indexOf('windows phone') === -1) {
 				// Windows Phone flags itself as "like iPhone", thus the extra check
 				return 'ios';
-			}
-			else {
+			} else {
 				return 'other';
 			}
 		},
 
 		// Firefox doesn't show text that scrolls into the padding of a textarea, so
 		// rearrange a couple box models to make highlights behave the same way
-		fixFirefox: function () {
+		fixFirefox: function() {
 			// take padding and border pixels from highlights div
 			let padding = this.$highlights.css([
 				'padding-top', 'padding-right', 'padding-bottom', 'padding-left'
@@ -139,14 +136,14 @@
 
 		// iOS adds 3px of (unremovable) padding to the left and right of a textarea,
 		// so adjust highlights div to match
-		fixIOS: function () {
+		fixIOS: function() {
 			this.$highlights.css({
 				'padding-left': '+=3px',
 				'padding-right': '+=3px'
 			});
 		},
 
-		handleInput: function () {
+		handleInput: function() {
 			let input = this.$el.val();
 			let ranges = this.getRanges(input, this.highlight);
 			let unstaggeredRanges = this.removeStaggeredRanges(ranges);
@@ -154,7 +151,7 @@
 			this.renderMarks(boundaries);
 		},
 
-		getRanges: function (input, highlight) {
+		getRanges: function(input, highlight) {
 			let type = this.getType(highlight);
 			switch (type) {
 				case 'array':
@@ -179,16 +176,16 @@
 			}
 		},
 
-		getArrayRanges: function (input, arr) {
+		getArrayRanges: function(input, arr) {
 			let ranges = arr.map(this.getRanges.bind(this, input));
 			return Array.prototype.concat.apply([], ranges);
 		},
 
-		getFunctionRanges: function (input, func) {
+		getFunctionRanges: function(input, func) {
 			return this.getRanges(input, func(input));
 		},
 
-		getRegExpRanges: function (input, regex) {
+		getRegExpRanges: function(input, regex) {
 			let ranges = [];
 			let match;
 			while (match = regex.exec(input), match !== null) {
@@ -202,7 +199,7 @@
 			return ranges;
 		},
 
-		getStringRanges: function (input, str) {
+		getStringRanges: function(input, str) {
 			let ranges = [];
 			let inputLower = input.toLowerCase();
 			let strLower = str.toLowerCase();
@@ -214,14 +211,14 @@
 			return ranges;
 		},
 
-		getRangeRanges: function (input, range) {
+		getRangeRanges: function(input, range) {
 			return [range];
 		},
 
-		getCustomRanges: function (input, custom) {
+		getCustomRanges: function(input, custom) {
 			let ranges = this.getRanges(input, custom.highlight);
 			if (custom.className) {
-				ranges.forEach(function (range) {
+				ranges.forEach(function(range) {
 					// persist class name as a property of the array
 					if (range.className) {
 						range.className = custom.className + ' ' + range.className;
@@ -234,10 +231,10 @@
 		},
 
 		// prevent staggered overlaps (clean nesting is fine)
-		removeStaggeredRanges: function (ranges) {
+		removeStaggeredRanges: function(ranges) {
 			let unstaggeredRanges = [];
-			ranges.forEach(function (range) {
-				let isStaggered = unstaggeredRanges.some(function (unstaggeredRange) {
+			ranges.forEach(function(range) {
+				let isStaggered = unstaggeredRanges.some(function(unstaggeredRange) {
 					let isStartInside = range[0] > unstaggeredRange[0] && range[0] < unstaggeredRange[1];
 					let isStopInside = range[1] > unstaggeredRange[0] && range[1] < unstaggeredRange[1];
 					return isStartInside !== isStopInside; // xor
@@ -249,9 +246,9 @@
 			return unstaggeredRanges;
 		},
 
-		getBoundaries: function (ranges) {
+		getBoundaries: function(ranges) {
 			let boundaries = [];
-			ranges.forEach(function (range) {
+			ranges.forEach(function(range) {
 				boundaries.push({
 					type: 'start',
 					index: range[0],
@@ -267,9 +264,9 @@
 			return boundaries;
 		},
 
-		sortBoundaries: function (boundaries) {
+		sortBoundaries: function(boundaries) {
 			// backwards sort (since marks are inserted right to left)
-			boundaries.sort(function (a, b) {
+			boundaries.sort(function(a, b) {
 				if (a.index !== b.index) {
 					return b.index - a.index;
 				} else if (a.type === 'stop' && b.type === 'start') {
@@ -282,9 +279,9 @@
 			});
 		},
 
-		renderMarks: function (boundaries) {
+		renderMarks: function(boundaries) {
 			let input = this.$el.val();
-			boundaries.forEach(function (boundary, index) {
+			boundaries.forEach(function(boundary, index) {
 				let markup;
 				if (boundary.type === 'start') {
 					markup = '{{hwt-mark-start|' + index + '}}';
@@ -306,7 +303,7 @@
 			}
 
 			// replace start tokens with opening <mark> tags with class name
-			input = input.replace(/\{\{hwt-mark-start\|(\d+)\}\}/g, function (match, submatch) {
+			input = input.replace(/\{\{hwt-mark-start\|(\d+)\}\}/g, function(match, submatch) {
 				var className = boundaries[+submatch].className;
 				if (className) {
 					return '<mark class="' + className + '">';
@@ -321,7 +318,7 @@
 			this.$highlights.html(input);
 		},
 
-		handleScroll: function () {
+		handleScroll: function() {
 			let scrollTop = this.$el.scrollTop();
 			this.$backdrop.scrollTop(scrollTop);
 
@@ -334,11 +331,11 @@
 
 		// in Chrome, page up/down in the textarea will shift stuff within the
 		// container (despite the CSS), this immediately reverts the shift
-		blockContainerScroll: function () {
+		blockContainerScroll: function() {
 			this.$container.scrollLeft(0);
 		},
 
-		destroy: function () {
+		destroy: function() {
 			this.$backdrop.remove();
 			this.$el
 				.unwrap()
@@ -349,8 +346,8 @@
 	};
 
 	// register the jQuery plugin
-	$.fn.highlightWithinTextarea = function (options) {
-		return this.each(function () {
+	$.fn.highlightWithinTextarea = function(options) {
+		return this.each(function() {
 			let $this = $(this);
 			let plugin = $this.data(ID);
 
