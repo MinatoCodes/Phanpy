@@ -1,1 +1,66 @@
-
+[
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "hi"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "Hello! How can I help you today?\n"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "whats your model"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "I'm a large language model, trained by Google.  I don't have a specific model name like \"GPT-3\" or \"LaMDA.\"  Google keeps the specifics of its models confidential.\n"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "do you have real time info"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "parts": [
+      {
+        "text": "do you have real time info"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "No, I do not have access to real-time information. My knowledge cutoff is 2021.  To get real-time information, you'll need to consult sources like news websites, live feeds, or other up-to-the-minute data providers.\n"
+      }
+    ]
+  },
+  {
+    "role": "model",
+    "parts": [
+      {
+        "text": "No, I do not have access to real-time information. My knowledge cutoff is 2021.  To get real-time information, you'll need to consult sources like news websites, live feeds, or other up-to-the-minute data providers."
+      }
+    ]
+  }
+]
